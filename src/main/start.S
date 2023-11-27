@@ -4,27 +4,41 @@
     .globl _start;
     .type _start,@function
 
+#define SIM
+
+
 _start:
-	li x1,1
-	li x2,2
-	li x3,3
-	li x4,4
-	li x5,5
-	li x6,6
-	li x7,7
-	li x8,8
-	li x9,9
-	li x10,10
-	li x11,11
-	li x12,12
-	li x13,13
-	li x14,14
-	li x15,15
-	li x16,16
-	li x17,17
-	li x18,18
-	li x19,19
-	li x20,20
-	add x1,x2,x3 // x1 = 5 21 = 2+3
-	add x1,x1,x1 // x1 = 10 22 = 21+21
-	add x1,x1,x1 // x1 = 20 23 = 22+22
+.option push
+.option norelax
+	la gp, __global_pointer$
+.option pop
+	la sp, _sp 
+
+	/* Load data section */
+	la a0, _data_lma 
+	la a1, _data
+	la a2, _edata
+	bgeu a1, a2, 2f
+1:
+	lw t0, (a0)
+	sw t0, (a1)
+	lw t1, (a1)
+	addi a0, a0, 4 
+	addi a1, a1, 4
+	bltu a1, a2, 1b
+2:
+
+	/* Clear bss section */
+	la a0, __bss_start
+	la a1, _end
+	bgeu a0, a1, 2f
+1:
+	sw zero, (a0)
+	addi a0, a0, 4
+	bltu a0, a1, 1b
+2:
+    call main
+loop:
+    j loop
+
+    

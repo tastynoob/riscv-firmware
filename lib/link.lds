@@ -1,30 +1,11 @@
 
-
-/* 
-OUTPUT_ARCH( "riscv" )
-ENTRY(_start)
-
-SECTIONS
-{
-  . = 0x00000000;
-  .text.init : { *(.text.init) }
-  .data ALIGN(0x1000) : { *(.data) }
-  .bss : { *(.bss) }
-  _end = .;
-} */
-
-
-
-
-
-
 OUTPUT_ARCH( "riscv" )
 ENTRY(_start)
 
 MEMORY
 {
-  flash (wxa!ri) : ORIGIN = 0x000000000000000, LENGTH = 64k
-  ram (wxa!ri) :   ORIGIN = 0x000000000000000, LENGTH = 64k
+  flash (wxa!ri) : ORIGIN = 0x00000000, LENGTH = 64k
+  ram (wxa!ri) :   ORIGIN = 0x01000000, LENGTH = 64k
 }
 
 
